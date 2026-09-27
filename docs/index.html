@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QBIO Phase-2 Demo</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <div class="eyebrow">QBIO · GOVERNANCE PROTOTYPE</div>
+        <h1>Phase 2 deliberation</h1>
+        <p class="lede">GitHub Pages renders only the public aggregate state: who is currently winning, and—once discussion begins—how much eligible voting power is represented by explicit intentions. Python remains an Etherscan verification/render harness.</p>
+      </div>
+      <div class="walletBox">
+        <button id="connectWallet">Connect MetaMask</button>
+        <div id="walletStatus" class="muted">read-only / demo mode</div>
+      </div>
+    </header>
+
+    <section class="proposal card">
+      <div class="proposalTop"><span id="proposalId" class="pill neutral"></span><span>Phase 2</span></div>
+      <h2 id="proposalTitle"></h2>
+      <p id="proposalDescription"></p>
+      <div class="actions">
+        <a id="proposalDoc" target="_blank" rel="noreferrer">Open proposal document</a>
+        <a id="writeContractLink" class="secondaryLink disabled" target="_blank" rel="noreferrer">Open Etherscan Write Contract</a>
+      </div>
+      <p class="note">The DAO promotes Phase 1 by calling <code>postProposal(id, documentURI)</code>. Individual intentions are never parameters of the public projection functions.</p>
+    </section>
+
+    <section class="publicState card">
+      <div>
+        <div class="eyebrow">PUBLIC PHASE-2 STATE</div>
+        <h3>Current aggregate projection</h3>
+      </div>
+      <div class="winnerBlock">
+        <small>Winner</small>
+        <strong id="winnerValue">NO</strong>
+        <p id="winnerRule" class="muted">Dormant/absent voting power defaults to NO.</p>
+      </div>
+      <div id="participationDisclosure" class="participationDisclosure" hidden>
+        <small>Explicit intentions / total eligible voting power</small>
+        <strong id="participationValue">0%</strong>
+        <div class="track"><div id="participationBar" class="bar"></div></div>
+      </div>
+      <p id="discussionWaiting" class="note">Participation percentage remains undisclosed until at least one forum comment exists.</p>
+    </section>
+
+    <section class="card etherscanCard">
+      <div class="tableHead">
+        <div>
+          <div class="eyebrow">ETHERSCAN RENDER</div>
+          <h3>DAO + verified contract snapshot</h3>
+        </div>
+        <div class="actions compact">
+          <a id="daoEtherscanLink" class="secondaryLink disabled" target="_blank" rel="noreferrer">DAO address</a>
+          <a id="contractEtherscanLink" class="secondaryLink disabled" target="_blank" rel="noreferrer">Contract code</a>
+        </div>
+      </div>
+      <div class="chainGrid">
+        <div><small>Chain ID</small><strong id="chainIdValue">—</strong></div>
+        <div><small>DAO</small><strong id="daoAddressValue">—</strong></div>
+        <div><small>Registry</small><strong id="contractAddressValue">—</strong></div>
+        <div><small>Source</small><strong id="sourceStatus">—</strong></div>
+        <div><small>Compiler</small><strong id="compilerValue">—</strong></div>
+      </div>
+      <div class="tableScroll"><table>
+        <thead><tr><th>Recent DAO tx</th><th>Decoded function</th><th>Status</th></tr></thead>
+        <tbody id="etherscanTxRows"><tr><td colspan="3" class="muted">Loading…</td></tr></tbody>
+      </table></div>
+      <p class="note">The API key stays in Python. The static site receives only public Etherscan data through <code>docs/etherscan-data.json</code>.</p>
+    </section>
+
+    <section class="grid3">
+      <div class="stat card"><div>Certified</div><strong id="certifiedCount">0</strong><small>eligible + explicit intention + certified identity</small></div>
+      <div class="stat card"><div>Anonymous</div><strong id="anonymousCount">0</strong><small>eligible + explicit intention without certification</small></div>
+      <div class="stat card"><div>Absent / dormant</div><strong id="absentCount">0</strong><small>eligible but no explicit intention; projected as NO</small></div>
+    </section>
+
+    <section class="card policy">
+      <div>
+        <h3>Anonymous rebalancing — demo parameter</h3>
+        <p>The exact anonymous-vote rule is still undefined. The simulator keeps the earlier explicit coefficient so the rule can be replaced without changing the public contract interface.</p>
+      </div>
+      <div class="sliderWrap"><input id="anonymousMultiplier" type="range" min="0" max="100" value="50"/><strong id="multiplierValue">50%</strong></div>
+    </section>
+
+    <section class="card localHarness">
+      <div class="tableHead">
+        <div>
+          <div class="eyebrow">LOCAL TEST HARNESS · NOT PUBLIC FORUM OUTPUT</div>
+          <h3>Synthetic intentions and comments</h3>
+          <p class="muted">Changing YES↔NO does not publish an address or a vote. The trace below records an on-chain action only when the aggregate winner changes, or when discussion disclosure must publish a new participation percentage.</p>
+        </div>
+        <div class="internalMetrics">
+          <span><small>Eligible power</small><b id="eligiblePower">0</b></span>
+          <span><small>Explicit power</small><b id="explicitPower">0</b></span>
+          <span><small>Excluded &lt;10k</small><b id="excludedCount">0</b></span>
+        </div>
+      </div>
+      <div class="tableScroll"><table>
+        <thead><tr><th>User</th><th>QBIO</th><th>Group</th><th>Local intention</th><th>Comment</th><th>Test actions</th></tr></thead>
+        <tbody id="participantRows"></tbody>
+      </table></div>
+      <p class="note">Rows below 10,000 QBIO are outside the voting body and therefore outside the participation denominator.</p>
+    </section>
+
+    <section class="card">
+      <h3>Execution trace</h3>
+      <div id="eventLog" class="eventLog"></div>
+      <p class="note">Only entries labelled ON-CHAIN represent calls the live DAO would need to publish. LOCAL entries are deliberately private simulation changes.</p>
+    </section>
+
+    <footer>Prototype only · live Etherscan verification requires a deployed contract and an Etherscan API key.</footer>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

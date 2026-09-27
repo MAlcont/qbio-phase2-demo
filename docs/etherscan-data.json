@@ -1,0 +1,11 @@
+{
+  "mode": "demo",
+  "generatedAt": null,
+  "chainId": "11155111",
+  "explorerBase": "https://sepolia.etherscan.io",
+  "daoAddress": "",
+  "contractAddress": "",
+  "source": null,
+  "recentTransactions": [],
+  "note": "Run scripts/etherscan_bridge.py render after setting ETHERSCAN_API_KEY, DAO_ADDRESS and CONTRACT_ADDRESS."
+}

@@ -5,32 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>QBIO Phase-2 Demo</title>
   <link rel="stylesheet" href="./styles.css" />
-  <style>
-    .prototypeNotice { margin:0 0 18px; border-style:dashed; }
-    .prototypeNotice .noticeLead { margin:8px 0 0; max-width:880px; font-size:15px; color:#4f4d47; }
-    .prototypeNotice details { margin-top:16px; border-top:1px solid #eceae4; padding-top:14px; }
-    .prototypeNotice summary { cursor:pointer; font-weight:750; line-height:1.35; }
-    .prototypeNotice details[open] summary { margin-bottom:14px; }
-    .explainerGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
-    .explainStep { background:#f7f6f2; border-radius:12px; padding:14px; }
-    .explainStep b { display:block; margin-bottom:5px; }
-    .explainStep p { margin:0; font-size:14px; }
-    .prototypeNotes { margin:14px 0 0; padding-left:20px; color:#55534d; font-size:14px; line-height:1.5; }
-    .prototypeNotes li + li { margin-top:7px; }
-    .walletBox .walletHint { margin-top:7px; max-width:230px; font-size:12px; line-height:1.35; }
-    @media (max-width:760px) {
-      .shell { padding:28px 14px 54px; }
-      h1 { font-size:clamp(38px,14vw,58px); }
-      .lede { font-size:16px; }
-      .explainerGrid { grid-template-columns:1fr; }
-      .prototypeNotice { padding:18px; }
-      .walletBox { width:100%; }
-      .walletBox button { width:100%; }
-      .localHarness .tableScroll { margin-left:-18px; margin-right:-18px; padding-left:18px; padding-right:18px; }
-      .actionCell { white-space:normal; min-width:170px; }
-      .actionCell button { margin:2px 0; }
-    }
-  </style>
 </head>
 <body>
   <main class="shell">
@@ -50,40 +24,24 @@
     <section class="prototypeNotice card">
       <div class="eyebrow">READ ME · SYNTHETIC DEMO</div>
       <p class="noticeLead">This page deliberately exposes synthetic account rows so that the calculation can be tested. A production forum would not publish the account-to-intention mapping: it would expose only the aggregate winner and the permitted aggregate participation measure.</p>
-
       <details>
         <summary>How the intended governance flow works</summary>
-
         <div class="explainerGrid">
-          <div class="explainStep">
-            <b>1 · Identity admission</b>
-            <p>The DAO maintains an offline list of people it has accepted through a live interview, an existing trusted relationship, or another reliable route. An institutional address—such as a university mailbox—can be a secondary route to establishing identity.</p>
-          </div>
-          <div class="explainStep">
-            <b>2 · Account registration</b>
-            <p>The DAO sends an invitation to register on the site. The account binds a 2FA device and may bind one or more Ethereum addresses. A wallet is needed when QBIO holdings are meant to contribute voting weight; participation in discussion does not require publishing a wallet-address vote.</p>
-          </div>
-          <div class="explainStep">
-            <b>3 · Proposal pipeline</b>
-            <p>A proposal matures through community discussion and the simplified Phase 1 process, then enters this soft Phase 2 on the DAO site. Management of the later stages can be delegated to the DAO account; automation is optional.</p>
-          </div>
-          <div class="explainStep">
-            <b>4 · Forum and intentions</b>
-            <p>Eligible voting power is dormant NO by default. An account may change its current intention without publishing an individual on-chain vote. Commenting is separate from changing intention. Once discussion exists, the site may disclose the share of total eligible voting power represented by explicit intentions.</p>
-          </div>
+          <div class="explainStep"><b>1 · Identity admission</b><p>The DAO maintains an offline list of people accepted through a live interview, an existing trusted relationship, or another reliable route. An institutional address—such as a university mailbox—can be a secondary route.</p></div>
+          <div class="explainStep"><b>2 · Account registration</b><p>The DAO sends an invitation to register. The account binds a 2FA device and may bind one or more Ethereum addresses. A wallet is needed when QBIO holdings are meant to contribute voting weight.</p></div>
+          <div class="explainStep"><b>3 · Proposal pipeline</b><p>A proposal matures through community discussion and the simplified Phase 1 process, then enters this soft Phase 2 on the DAO site. Later stages may remain manual or be delegated to the DAO account.</p></div>
+          <div class="explainStep"><b>4 · Forum and intentions</b><p>Eligible voting power is dormant NO by default. An account may change its current intention without publishing an individual on-chain vote. Commenting is separate from changing intention.</p></div>
         </div>
-
         <ul class="prototypeNotes">
-          <li>The backend certifies the current account intention; the public interface exposes only the aggregate YES/NO winner, plus the aggregate explicit-participation percentage after discussion starts.</li>
-          <li>Certified accounts may remain absent/dormant or become explicit. Unidentified accounts or agents may participate with a reduced effective weight; the exact anonymous rebalancing rule is still a demo parameter.</li>
-          <li>When YES is ahead and explicit voting power is high enough that the formal governance step becomes unavoidable, the DAO could advance the proposal to Commons/Snapshot. That transition is not yet automated in this demo.</li>
-          <li>Placeholder labels: <strong>researcher</strong> represents the institutional-identification route; <strong>member</strong> represents an identity-verified account with at least 10,000 QBIO; <strong>observer</strong> represents an unidentified account with at least 10,000 QBIO. Rows explicitly labelled below-threshold exist only to test exclusion from the voting body.</li>
-          <li>The broader aim is to create time and accountability for discussion before formal voting, while giving the DAO a configurable place for proposal analytics and community traffic.</li>
+          <li>The backend certifies current account intention; the public interface exposes only the aggregate YES/NO winner, plus aggregate explicit participation after discussion starts.</li>
+          <li>Anonymous or agent accounts may receive reduced effective weight. In this demo the slider makes that reduction visible; at 0%, anonymous power does not affect the winner.</li>
+          <li>The visual uses an approximate <strong>400M QBIO circulating voting-power reference</strong> against a <strong>1B QBIO total supply</strong>. This reference is currently demo data, not a live on-chain supply query.</li>
+          <li>Placeholder labels: <strong>researcher</strong> represents the institutional-identification route; <strong>member</strong> represents an identity-verified account with at least 10,000 QBIO; <strong>observer</strong> represents an unidentified account with at least 10,000 QBIO.</li>
         </ul>
       </details>
     </section>
 
-    <section class="proposal card">
+    <section class="card proposalRegistryCard">
       <div class="proposalTop"><span id="proposalId" class="pill neutral"></span><span>Phase 2</span></div>
       <h2 id="proposalTitle"></h2>
       <p id="proposalDescription"></p>
@@ -92,28 +50,10 @@
         <a id="writeContractLink" class="secondaryLink disabled" target="_blank" rel="noreferrer">Open Etherscan Write Contract</a>
       </div>
       <p class="note">The DAO promotes Phase 1 by calling <code>postProposal(id, documentURI)</code>. Individual intentions are never parameters of the public projection functions.</p>
-    </section>
 
-    <section class="publicState card">
-      <div>
-        <div class="eyebrow">PUBLIC PHASE-2 STATE</div>
-        <h3>Current aggregate projection</h3>
-      </div>
-      <div class="winnerBlock">
-        <small>Winner</small>
-        <strong id="winnerValue">NO</strong>
-        <p id="winnerRule" class="muted">Dormant/absent voting power defaults to NO.</p>
-      </div>
-      <div id="participationDisclosure" class="participationDisclosure" hidden>
-        <small>Explicit intentions / total eligible voting power</small>
-        <strong id="participationValue">0%</strong>
-        <div class="track"><div id="participationBar" class="bar"></div></div>
-      </div>
-      <p id="discussionWaiting" class="note">Participation percentage remains undisclosed until at least one forum comment exists.</p>
-    </section>
+      <div class="registryDivider"></div>
 
-    <section class="card etherscanCard">
-      <div class="tableHead">
+      <div class="tableHead registryHead">
         <div>
           <div class="eyebrow">ETHERSCAN RENDER</div>
           <h3>DAO + verified contract snapshot</h3>
@@ -123,6 +63,7 @@
           <a id="contractEtherscanLink" class="secondaryLink disabled" target="_blank" rel="noreferrer">Contract code</a>
         </div>
       </div>
+
       <div class="chainGrid">
         <div><small>Chain ID</small><strong id="chainIdValue">—</strong></div>
         <div><small>DAO</small><strong id="daoAddressValue">—</strong></div>
@@ -130,6 +71,7 @@
         <div><small>Source</small><strong id="sourceStatus">—</strong></div>
         <div><small>Compiler</small><strong id="compilerValue">—</strong></div>
       </div>
+
       <div class="tableScroll"><table>
         <thead><tr><th>Recent DAO tx</th><th>Decoded function</th><th>Status</th></tr></thead>
         <tbody id="etherscanTxRows"><tr><td colspan="3" class="muted">Loading…</td></tr></tbody>
@@ -137,16 +79,66 @@
       <p class="note">The API key stays in Python. The static site receives only public Etherscan data through <code>docs/etherscan-data.json</code>.</p>
     </section>
 
+    <section class="publicState card">
+      <div class="publicHeading">
+        <div>
+          <div class="eyebrow">PUBLIC PHASE-2 STATE</div>
+          <h3>Current aggregate projection</h3>
+        </div>
+        <div class="winnerBlock">
+          <small>Winner</small>
+          <strong id="winnerValue">NO</strong>
+          <p id="winnerRule" class="muted">Dormant/absent voting power defaults to NO.</p>
+        </div>
+      </div>
+
+      <div class="projectionLayout">
+        <div class="donutPanel">
+          <div id="powerDonut" class="powerDonut" role="img" aria-label="Voting power composition">
+            <div class="donutHole">
+              <small>circulating</small>
+              <strong id="circulatingPowerValue">≈400M QBIO</strong>
+              <span>of <b id="totalSupplyValue">1B</b> total</span>
+            </div>
+          </div>
+
+          <div class="legendGrid">
+            <div><i class="legendDot certYes"></i><span>Certified YES</span><b id="legendCertifiedYes">0</b></div>
+            <div><i class="legendDot certNo"></i><span>Certified NO / dormant</span><b id="legendCertifiedNo">0</b></div>
+            <div><i class="legendDot anonYes"></i><span>Anonymous YES counted</span><b id="legendAnonymousYes">0</b></div>
+            <div><i class="legendDot anonNo"></i><span>Anonymous NO / dormant counted</span><b id="legendAnonymousNo">0</b></div>
+            <div><i class="legendDot discounted"></i><span>Anonymous weight discounted</span><b id="legendDiscounted">0</b></div>
+          </div>
+        </div>
+
+        <div class="projectionMetrics">
+          <div class="projectionMetric yesMetric"><small>Effective YES</small><strong id="effectiveYesPower">0</strong><span id="yesShareValue">0%</span></div>
+          <div class="projectionMetric noMetric"><small>Effective NO</small><strong id="effectiveNoPower">0</strong><span id="noShareValue">0%</span></div>
+          <div class="projectionMetric"><small>Explicit nominal power</small><strong id="explicitSummaryPower">0</strong><span>of ≈400M circulating</span></div>
+          <div class="projectionMetric"><small>Effective counted power</small><strong id="countedPowerValue">0</strong><span>after anonymous weighting</span></div>
+          <div class="projectionMetric"><small>Discounted anonymous power</small><strong id="discountedAnonymousPower">0</strong><span>does not affect winner</span></div>
+          <p id="referenceCheck" class="referenceCheck muted"></p>
+        </div>
+      </div>
+
+      <div id="participationDisclosure" class="participationDisclosure" hidden>
+        <small>Explicit intentions / total eligible nominal voting power</small>
+        <strong id="participationValue">0%</strong>
+        <div class="track"><div id="participationBar" class="bar"></div></div>
+      </div>
+      <p id="discussionWaiting" class="note">Participation percentage remains undisclosed until at least one forum comment exists.</p>
+    </section>
+
     <section class="grid3">
       <div class="stat card"><div>Certified</div><strong id="certifiedCount">0</strong><small>eligible + explicit intention + certified identity</small></div>
       <div class="stat card"><div>Anonymous</div><strong id="anonymousCount">0</strong><small>eligible + explicit intention without certification</small></div>
-      <div class="stat card"><div>Absent / dormant</div><strong id="absentCount">0</strong><small>eligible but no explicit intention; projected as NO</small></div>
+      <div class="stat card"><div>Absent / dormant</div><strong id="absentCount">0</strong><small>eligible but no explicit intention; projected as NO at its identity weight</small></div>
     </section>
 
     <section class="card policy">
       <div>
         <h3>Anonymous rebalancing — demo parameter</h3>
-        <p>The exact anonymous-vote rule is still undefined. The simulator keeps an explicit coefficient so the rule can later be replaced without changing the public contract interface.</p>
+        <p>At 100%, anonymous holdings count like certified holdings. At 0%, only certified researcher/member power affects the winner; anonymous power stays visible in the donut as discounted.</p>
       </div>
       <div class="sliderWrap"><input id="anonymousMultiplier" type="range" min="0" max="100" value="50" /><strong id="multiplierValue">50%</strong></div>
     </section>
@@ -156,7 +148,7 @@
         <div>
           <div class="eyebrow">LOCAL TEST HARNESS · NOT PUBLIC FORUM OUTPUT</div>
           <h3>Synthetic intentions and comments</h3>
-          <p class="muted">Changing YES↔NO does not publish an address or a vote. The trace below records an on-chain action only when the aggregate winner changes, or when discussion disclosure must publish a new participation percentage.</p>
+          <p class="muted">Click YES/NO/ABSENT and watch the aggregate projection and donut update immediately. Anonymous effective weight changes with the slider.</p>
         </div>
         <div class="internalMetrics">
           <span><small>Eligible power</small><b id="eligiblePower">0</b></span>
@@ -165,7 +157,7 @@
         </div>
       </div>
       <div class="tableScroll"><table>
-        <thead><tr><th>User</th><th>QBIO</th><th>Group</th><th>Local intention</th><th>Comment</th><th>Test actions</th></tr></thead>
+        <thead><tr><th>User</th><th>QBIO</th><th>Group</th><th>Local intention</th><th>Effective weight</th><th>Comment</th><th>Test actions</th></tr></thead>
         <tbody id="participantRows"></tbody>
       </table></div>
       <p class="note">Rows below 10,000 QBIO are outside the voting body and therefore outside the participation denominator.</p>

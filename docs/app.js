@@ -1,22 +1,23 @@
 import { ethers } from 'https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js';
-import { proposal, participants as seed } from './demo-data.js';
+import { governance, proposal, participants as seed } from './demo-data.js';
 import { project, groupFor, publicProjection, meetsThreshold } from './core.js';
 
 const state = {
   participants: structuredClone(seed),
-  threshold: 10_000,
+  threshold: governance.minimumWalletQbio,
   anonymousMultiplier: 0.5,
   wallet: null,
   chainId: null,
   etherscan: null,
   events: [
-    { layer: 'ON-CHAIN', text: `ProposalPosted(${proposal.id}, documentURI) · initial winner NO (dormant default).` },
+    { layer: 'ON-CHAIN', text: `ProposalPosted(${proposal.id}, documentURI) · initial projection calculated from dormant-NO rules.` },
     { layer: 'ETHERSCAN', text: 'Static Etherscan snapshot not loaded yet.' }
   ]
 };
 
 const $ = (id) => document.getElementById(id);
 const fmt = (n) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 }).format(n);
+const compact = (n) => new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(n);
 const pct = (n) => `${fmt(n)}%`;
 const short = (v) => v && v.length > 14 ? `${v.slice(0, 8)}…${v.slice(-6)}` : (v || '—');
 
@@ -30,6 +31,31 @@ function stats() {
 function explorerUrl(path) {
   const base = state.etherscan?.explorerBase || 'https://sepolia.etherscan.io';
   return `${base}${path}`;
+}
+
+function percentOf(value, total) {
+  return total > 0 ? 100 * value / total : 0;
+}
+
+function conicGradient(segments, total) {
+  const palette = {
+    certifiedYes: 'var(--cert-yes)',
+    certifiedNo: 'var(--cert-no)',
+    anonymousYesCounted: 'var(--anon-yes)',
+    anonymousNoCounted: 'var(--anon-no)',
+    anonymousDiscounted: 'var(--discounted)'
+  };
+
+  let cursor = 0;
+  const stops = [];
+  for (const [key, value] of Object.entries(segments)) {
+    if (value <= 0 || total <= 0) continue;
+    const start = cursor;
+    cursor += 100 * value / total;
+    stops.push(`${palette[key]} ${start}% ${cursor}%`);
+  }
+  if (cursor < 100) stops.push(`var(--discounted) ${cursor}% 100%`);
+  return `conic-gradient(${stops.join(', ')})`;
 }
 
 function renderEtherscan() {
@@ -76,6 +102,36 @@ function renderEtherscan() {
     : '<tr><td colspan="3" class="muted">No Etherscan snapshot yet. Run the Python render command after deployment.</td></tr>';
 }
 
+function renderProjectionVisual(s) {
+  $('circulatingPowerValue').textContent = `≈${compact(governance.circulatingVotingPower)} QBIO`;
+  $('totalSupplyValue').textContent = compact(governance.totalSupply);
+  $('effectiveYesPower').textContent = `${compact(s.effective.yes)} QBIO`;
+  $('effectiveNoPower').textContent = `${compact(s.effective.noWithDormant)} QBIO`;
+  $('explicitSummaryPower').textContent = `${compact(s.explicitVotingPower)} QBIO`;
+  $('countedPowerValue').textContent = `${compact(s.effective.totalCounted)} QBIO`;
+  $('discountedAnonymousPower').textContent = `${compact(s.effective.discountedAnonymous)} QBIO`;
+
+  const yesPct = percentOf(s.effective.yes, s.effective.totalCounted);
+  const noPct = percentOf(s.effective.noWithDormant, s.effective.totalCounted);
+  $('yesShareValue').textContent = pct(yesPct);
+  $('noShareValue').textContent = pct(noPct);
+
+  const donut = $('powerDonut');
+  donut.style.background = conicGradient(s.chart, s.totalVotingPower);
+  donut.setAttribute('aria-label', `Voting power composition: ${yesPct.toFixed(1)} percent effective YES and ${noPct.toFixed(1)} percent effective NO among counted power.`);
+
+  $('legendCertifiedYes').textContent = compact(s.chart.certifiedYes);
+  $('legendCertifiedNo').textContent = compact(s.chart.certifiedNo);
+  $('legendAnonymousYes').textContent = compact(s.chart.anonymousYesCounted);
+  $('legendAnonymousNo').textContent = compact(s.chart.anonymousNoCounted);
+  $('legendDiscounted').textContent = compact(s.chart.anonymousDiscounted);
+
+  const referenceDelta = s.totalVotingPower - governance.circulatingVotingPower;
+  $('referenceCheck').textContent = Math.abs(referenceDelta) < 1
+    ? 'Synthetic eligible rows = 400M reference voting power.'
+    : `Synthetic rows differ from the 400M reference by ${compact(referenceDelta)} QBIO.`;
+}
+
 function render() {
   const s = stats();
   const publicState = publicProjection(s);
@@ -105,16 +161,21 @@ function render() {
   $('excludedCount').textContent = s.excludedCount;
   $('multiplierValue').textContent = `${Math.round(state.anonymousMultiplier * 100)}%`;
 
+  renderProjectionVisual(s);
+
   $('participantRows').innerHTML = state.participants.map((p, i) => {
     const eligible = meetsThreshold(p, state.threshold);
     const group = groupFor(p, state.threshold);
     const groupLabel = eligible ? group : 'excluded';
     const intention = p.intention === 'none' ? '—' : p.intention.toUpperCase();
+    const effectiveWeight = eligible ? p.qbio * (p.certified ? 1 : state.anonymousMultiplier) : 0;
+
     return `<tr class="${eligible ? '' : 'excludedRow'}">
       <td>${p.username}</td>
       <td>${fmt(p.qbio)}</td>
       <td><span class="pill ${groupLabel}">${groupLabel}</span></td>
       <td>${intention}</td>
+      <td>${eligible ? compact(effectiveWeight) : '—'}</td>
       <td>${p.commented ? 'yes' : 'no'}</td>
       <td class="actionCell">
         <button class="mini" data-act="yes" data-i="${i}">YES</button>
@@ -146,7 +207,7 @@ function publishAggregateDiff(before, after, reason) {
     if (firstDisclosure || participationChanged) {
       state.events.push({
         layer: 'ON-CHAIN',
-        text: `publishDiscussionParticipation(${proposal.id}, ${after.participationBps}) · ${(after.participationBps / 100).toFixed(2)}% explicit voting power.`
+        text: `publishDiscussionParticipation(${proposal.id}, ${after.participationBps}) · ${(after.participationBps / 100).toFixed(2)}% explicit nominal voting power.`
       });
     }
   }
@@ -183,7 +244,7 @@ async function connectWallet() {
     const network = await provider.getNetwork();
     state.chainId = Number(network.chainId);
     $('walletStatus').textContent = `${state.wallet.slice(0, 6)}…${state.wallet.slice(-4)} · chain ${state.chainId}`;
-    state.events.push({ layer: 'WALLET', text: 'MetaMask/EIP-1193 wallet connected. No vote transaction was sent.' });
+    state.events.push({ layer: 'WALLET', text: 'Wallet connected for registration/bootstrap demo. No vote transaction was sent.' });
   } catch (err) {
     state.events.push({ layer: 'WALLET', text: `Connection cancelled or failed: ${err.shortMessage || err.message}` });
   }
@@ -197,10 +258,7 @@ function setIntention(index, intention) {
   p.intention = intention;
   const after = stats();
 
-  state.events.push({
-    layer: 'LOCAL',
-    text: `${p.username}: ${previous.toUpperCase()} → ${intention.toUpperCase()}. No per-address vote is published.`
-  });
+  state.events.push({ layer: 'LOCAL', text: `${p.username}: ${previous.toUpperCase()} → ${intention.toUpperCase()}. No per-address vote is published.` });
   publishAggregateDiff(before, after, 'private intention update');
   render();
 }
@@ -221,7 +279,7 @@ function setAnonymousMultiplier(value) {
   const before = stats();
   state.anonymousMultiplier = value;
   const after = stats();
-  state.events.push({ layer: 'LOCAL', text: `Anonymous demo coefficient → ${Math.round(value * 100)}%. This is a modelling parameter, not a live voter action.` });
+  state.events.push({ layer: 'LOCAL', text: `Anonymous weight → ${Math.round(value * 100)}%. At 0%, only certified researcher/member power affects the winner.` });
   publishAggregateDiff(before, after, 'anonymous rebalance parameter changed');
   render();
 }

@@ -3,7 +3,7 @@ export const proposal = {
   phase1Ref: 'Phase 1 / manual DAO intake',
   title: 'QBIO Phase-2 deliberation demo',
   documentUrl: 'https://docs.google.com/',
-  description: 'Soft deliberation before the final Snapshot vote. Individual intentions remain local/private in this demo; the public contract receives only the aggregate winner and, after a comment exists, aggregate participation weight.'
+  description: 'Soft deliberation before the hard phase 2 on Commons. Individual intentions remain local/private in this demo; the public contract receives only the aggregate winner and, after a comment exists, aggregate participation weight.'
 };
 
 // Synthetic local test data. These rows are NOT intended to be published by the live forum.

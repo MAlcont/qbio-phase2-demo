@@ -1,10 +1,36 @@
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>QBIO Phase-2 Demo</title>
   <link rel="stylesheet" href="./styles.css" />
+  <style>
+    .prototypeNotice { margin:0 0 18px; border-style:dashed; }
+    .prototypeNotice .noticeLead { margin:8px 0 0; max-width:880px; font-size:15px; color:#4f4d47; }
+    .prototypeNotice details { margin-top:16px; border-top:1px solid #eceae4; padding-top:14px; }
+    .prototypeNotice summary { cursor:pointer; font-weight:750; line-height:1.35; }
+    .prototypeNotice details[open] summary { margin-bottom:14px; }
+    .explainerGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .explainStep { background:#f7f6f2; border-radius:12px; padding:14px; }
+    .explainStep b { display:block; margin-bottom:5px; }
+    .explainStep p { margin:0; font-size:14px; }
+    .prototypeNotes { margin:14px 0 0; padding-left:20px; color:#55534d; font-size:14px; line-height:1.5; }
+    .prototypeNotes li + li { margin-top:7px; }
+    .walletBox .walletHint { margin-top:7px; max-width:230px; font-size:12px; line-height:1.35; }
+    @media (max-width:760px) {
+      .shell { padding:28px 14px 54px; }
+      h1 { font-size:clamp(38px,14vw,58px); }
+      .lede { font-size:16px; }
+      .explainerGrid { grid-template-columns:1fr; }
+      .prototypeNotice { padding:18px; }
+      .walletBox { width:100%; }
+      .walletBox button { width:100%; }
+      .localHarness .tableScroll { margin-left:-18px; margin-right:-18px; padding-left:18px; padding-right:18px; }
+      .actionCell { white-space:normal; min-width:170px; }
+      .actionCell button { margin:2px 0; }
+    }
+  </style>
 </head>
 <body>
   <main class="shell">
@@ -12,31 +38,50 @@
       <div>
         <div class="eyebrow">QBIO · GOVERNANCE PROTOTYPE</div>
         <h1>Phase 2 deliberation</h1>
-        <p class="lede">GitHub Pages renders only the public aggregate state: who is currently winning, and—once discussion begins—how much eligible voting power is represented by explicit intentions. Python remains an Etherscan verification/render harness.<7n></p>
-              <p class="lede">How this is supposed to work: <n>this page is rendering the skeleton of the project and exposing all data, but in final implementation we will the following process. </n/
-      1) the DAO will have a internal list of people verified by interview - turning up your camera, putting a hand on your face to see you don't use filters...currently we may simply go with people we already know they're true. </n> Phase 2 is supposed to
-      be a community phase - without identity and some community rules, it's just a hurdle. </n>
-      2) the DAO will send to this list of people a mail to sign up on its site and connect a 2fA device. The account will be linkable to one or more wallets. 2fA + Eth address should be simple to adopt for everyone, and address is actually only needed if you want your opinion to "weight" - you're still free to  express it.
-      </n> <n>3) let's say a proposal passes the simplified Phase 1 the Gov wg is asking - it gets posted here then. This is supposed to be a proposal that has been developed after #community-suggestion talk on Discord, a thumbs up vote there again, and now anyone can post it in this "limbo".
-      </n> <n>From this moment on, management of the proposal for Phase 2 and 3 could even be passed to the DAO account, but this is just a note.
-      </n> <n>4) how the "forum" on the DAO site is supposed to work (and bring traffic!). Everyone can comment the proposal. The site is obviously highly customisable if we'll some analytics. Having traffic on the site means that even lenghty discussions, between people that can't help but 
-      drag the conversation "to their own mill", will be a net positive for the DAO. The hurdle is of course registration, but again, Phase 2 isn't serious with just a 10k $qbio treshold. Community is made of real people! what happens with the analytics? The site renders immediately the opinions:
-      </n> a) by default, everyone starts at NO. This can be simply changed from the account, in the proposal page. Changing opinion is suggested everytime you comment. <n>
-        This way nothing can be rushed up to Commons for Phase 2 voting and "notifications" to stakeholders is automated...
-        <n> b) the site certificates opionion on its backend, not on-chain - so you don't "vote" through the wallet, just sign-in with it or 2fA - and shows only if either Yes/No is winning. It also gives a % of the explicit voting power - how many wallets haven't been dormant on the proposal.</n>
-        <n> c) so: there are "certified" accounts, having received a mail from the DAO, that can either stay "absent" (dormant) or obtain a second certificate and express opinion/comment. There can also be anonymous accounts, or AI agents, with a different, reduced weight - for example automated to debate whether a proposal has realistic references.</n>
-        <n> d) the moment a proposal is unambiguosly favoured - Yes is winning and explicit power is high enough to win - the DAO can really just automate both Commons and Snapshot vote, but this is secondary, it can stay manual.</n>
-        <n> All of this is supposed to fix a few issues: discussion of proposals happen and helps the site have traffic, but governance itself is slowed down - longer phase 2, no passing until power is explicited; KYC: I don't know how anyone feel about the tokens treshold, I don't like having a facetous measure. If Phase 2 is supposed to protect the community, it's ok to force as many people as we can to "identify" - we already know most of each other currently; these - discussions, traffic, time and accountability are the 3/4 perks of this platform.</n>
-      </n><n> Additional note: "researcher" is used as a placeholder because a alternative route to identification could be institutional reliable boards such a university campus mail. The only placeholders that count are "member" (id+10k tokens) and "observer" (unidentified but with 10k tokens).</n>
-      <n> On voters fatigue, the DAO already having too much governance, etc: this projects fixes a few real problems. Phase 1 could also be moved on site for simplification. The important thing is having a good place for discussion and a customisable site is the best.<n>
-        The pipeline would be: - posting in #community-suggestions, getting feedback on Discord - once the proposal is mature, for example a wg gave thumb up, posting it for Phase 1. It then moves on DAO site. Very simple.
-      </n></n></p>
+        <p class="lede">GitHub Pages renders the public aggregate state: which side is currently winning and—after discussion begins—how much eligible voting power is represented by explicit intentions. Python remains an Etherscan verification/render harness.</p>
       </div>
       <div class="walletBox">
-        <button id="connectWallet">Connect MetaMask</button>
+        <button id="connectWallet">Connect wallet · registration demo</button>
         <div id="walletStatus" class="muted">read-only / demo mode</div>
+        <div class="walletHint muted">In the intended system the wallet is mainly used when the account is registered or recovered; later access may use 2FA.</div>
       </div>
     </header>
+
+    <section class="prototypeNotice card">
+      <div class="eyebrow">READ ME · SYNTHETIC DEMO</div>
+      <p class="noticeLead">This page deliberately exposes synthetic account rows so that the calculation can be tested. A production forum would not publish the account-to-intention mapping: it would expose only the aggregate winner and the permitted aggregate participation measure.</p>
+
+      <details>
+        <summary>How the intended governance flow works</summary>
+
+        <div class="explainerGrid">
+          <div class="explainStep">
+            <b>1 · Identity admission</b>
+            <p>The DAO maintains an offline list of people it has accepted through a live interview, an existing trusted relationship, or another reliable route. An institutional address—such as a university mailbox—can be a secondary route to establishing identity.</p>
+          </div>
+          <div class="explainStep">
+            <b>2 · Account registration</b>
+            <p>The DAO sends an invitation to register on the site. The account binds a 2FA device and may bind one or more Ethereum addresses. A wallet is needed when QBIO holdings are meant to contribute voting weight; participation in discussion does not require publishing a wallet-address vote.</p>
+          </div>
+          <div class="explainStep">
+            <b>3 · Proposal pipeline</b>
+            <p>A proposal matures through community discussion and the simplified Phase 1 process, then enters this soft Phase 2 on the DAO site. Management of the later stages can be delegated to the DAO account; automation is optional.</p>
+          </div>
+          <div class="explainStep">
+            <b>4 · Forum and intentions</b>
+            <p>Eligible voting power is dormant NO by default. An account may change its current intention without publishing an individual on-chain vote. Commenting is separate from changing intention. Once discussion exists, the site may disclose the share of total eligible voting power represented by explicit intentions.</p>
+          </div>
+        </div>
+
+        <ul class="prototypeNotes">
+          <li>The backend certifies the current account intention; the public interface exposes only the aggregate YES/NO winner, plus the aggregate explicit-participation percentage after discussion starts.</li>
+          <li>Certified accounts may remain absent/dormant or become explicit. Unidentified accounts or agents may participate with a reduced effective weight; the exact anonymous rebalancing rule is still a demo parameter.</li>
+          <li>When YES is ahead and explicit voting power is high enough that the formal governance step becomes unavoidable, the DAO could advance the proposal to Commons/Snapshot. That transition is not yet automated in this demo.</li>
+          <li>Placeholder labels: <strong>researcher</strong> represents the institutional-identification route; <strong>member</strong> represents an identity-verified account with at least 10,000 QBIO; <strong>observer</strong> represents an unidentified account with at least 10,000 QBIO. Rows explicitly labelled below-threshold exist only to test exclusion from the voting body.</li>
+          <li>The broader aim is to create time and accountability for discussion before formal voting, while giving the DAO a configurable place for proposal analytics and community traffic.</li>
+        </ul>
+      </details>
+    </section>
 
     <section class="proposal card">
       <div class="proposalTop"><span id="proposalId" class="pill neutral"></span><span>Phase 2</span></div>
@@ -101,9 +146,9 @@
     <section class="card policy">
       <div>
         <h3>Anonymous rebalancing — demo parameter</h3>
-        <p>The exact anonymous-vote rule is still undefined. The simulator keeps the earlier explicit coefficient so the rule can be replaced without changing the public contract interface.</p>
+        <p>The exact anonymous-vote rule is still undefined. The simulator keeps an explicit coefficient so the rule can later be replaced without changing the public contract interface.</p>
       </div>
-      <div class="sliderWrap"><input id="anonymousMultiplier" type="range" min="0" max="100" value="50"/><strong id="multiplierValue">50%</strong></div>
+      <div class="sliderWrap"><input id="anonymousMultiplier" type="range" min="0" max="100" value="50" /><strong id="multiplierValue">50%</strong></div>
     </section>
 
     <section class="card localHarness">

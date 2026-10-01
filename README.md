@@ -1,6 +1,6 @@
 # QBIO Phase-2 Governance Demo
 
-Static GitHub Pages prototype for a soft Phase-2 deliberation step before the final Snapshot vote.
+Static GitHub Pages prototype for a soft Phase-2 deliberation step before Commons and Snapshot vote (it hints at passing to Commons being opportune).
 
 Python is **not** an authentication or voting backend in this revision. It is only an **Etherscan verification/render harness**.
 
